@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import CubeFlipButton from './CubeFlipButton';
 import {
@@ -93,11 +92,31 @@ const pillars = [
 
 export default function PillarsOfPowerSection() {
   const [selectedPillarId, setSelectedPillarId] = useState('naval');
+  const [displayedPillarId, setDisplayedPillarId] = useState('naval');
+  const [isFading, setIsFading] = useState(false);
 
   const selectedPillar =
     pillars.find((pillar) => pillar.id === selectedPillarId) ?? pillars[0];
 
-  const SelectedIcon = selectedPillar.icon;
+  const displayedPillar =
+    pillars.find((pillar) => pillar.id === displayedPillarId) ?? pillars[0];
+
+  const SelectedIcon = displayedPillar.icon;
+
+  const handlePillarChange = (id: string) => {
+    if (id === selectedPillarId || isFading) return;
+
+    setSelectedPillarId(id);
+    setIsFading(true);
+
+    window.setTimeout(() => {
+      setDisplayedPillarId(id);
+
+      window.setTimeout(() => {
+        setIsFading(false);
+      }, 50);
+    }, 250);
+  };
 
   return (
     <section
@@ -212,7 +231,7 @@ export default function PillarsOfPowerSection() {
                   <CubeFlipButton
                     key={pillar.id}
                     selected={isSelected}
-                    onClick={() => setSelectedPillarId(pillar.id)}
+                    onClick={() => handlePillarChange(pillar.id)}
                     className="w-full"
                   >
                     <span className="flex w-full items-center gap-3">
@@ -230,41 +249,45 @@ export default function PillarsOfPowerSection() {
                       />
 
                       <span className="min-w-0 truncate text-[10px] font-semibold uppercase tracking-wide">
-                      {pillar.shortTitle}
-                    </span>
+                        {pillar.shortTitle}
+                      </span>
                     </span>
                   </CubeFlipButton>
                 );
               })}
             </div>
 
-            {/* Selected pillar details */}
-            <div className="mt-6 border border-[#c7a16a]/30 bg-[#0d1520] p-5 sm:p-7">
+            {/* Selected pillar details with fade transition */}
+            <div
+              className={`mt-6 border border-[#c7a16a]/30 bg-[#0d1520] p-5 transition-opacity duration-300 ease-in-out sm:p-7 ${
+                isFading ? 'opacity-0' : 'opacity-100'
+              }`}
+            >
               <div className="mb-5 flex items-start gap-4">
                 <div
                   className="flex h-12 w-12 shrink-0 items-center justify-center border"
                   style={{
-                    borderColor: `${selectedPillar.accent}65`,
-                    backgroundColor: `${selectedPillar.accent}12`,
+                    borderColor: `${displayedPillar.accent}65`,
+                    backgroundColor: `${displayedPillar.accent}12`,
                   }}
                 >
                   <SelectedIcon
                     size={23}
                     strokeWidth={1.4}
-                    style={{ color: selectedPillar.accent }}
+                    style={{ color: displayedPillar.accent }}
                   />
                 </div>
 
                 <div className="min-w-0">
                   <span
                     className="text-[10px] font-semibold uppercase tracking-[0.2em]"
-                    style={{ color: selectedPillar.accent }}
+                    style={{ color: displayedPillar.accent }}
                   >
-                    Pillar {selectedPillar.number}
+                    Pillar {displayedPillar.number}
                   </span>
 
                   <h3 className="mt-2 font-serif text-xl leading-snug text-[#ede4d3] sm:text-2xl">
-                    {selectedPillar.title}
+                    {displayedPillar.title}
                   </h3>
                 </div>
               </div>
@@ -272,27 +295,27 @@ export default function PillarsOfPowerSection() {
               <div
                 className="mb-5 h-px w-full"
                 style={{
-                  background: `linear-gradient(to right, ${selectedPillar.accent}90, transparent)`,
+                  background: `linear-gradient(to right, ${displayedPillar.accent}90, transparent)`,
                 }}
               />
 
               <p className="text-sm leading-7 text-[#bdc5ce]">
-                {selectedPillar.description}
+                {displayedPillar.description}
               </p>
 
               <div
                 className="mt-6 border-l-2 pl-4"
-                style={{ borderColor: selectedPillar.accent }}
+                style={{ borderColor: displayedPillar.accent }}
               >
                 <span
                   className="text-[10px] font-semibold uppercase tracking-[0.2em]"
-                  style={{ color: selectedPillar.accent }}
+                  style={{ color: displayedPillar.accent }}
                 >
                   Historical Significance
                 </span>
 
                 <p className="mt-2 text-sm leading-7 text-[#aab4c0]">
-                  {selectedPillar.significance}
+                  {displayedPillar.significance}
                 </p>
               </div>
 
@@ -302,14 +325,16 @@ export default function PillarsOfPowerSection() {
                 </h4>
 
                 <ul className="space-y-3">
-                  {selectedPillar.facts.map((fact) => (
+                  {displayedPillar.facts.map((fact) => (
                     <li
                       key={fact}
                       className="flex items-start gap-3 text-sm leading-6 text-[#bdc5ce]"
                     >
                       <span
                         className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
-                        style={{ backgroundColor: selectedPillar.accent }}
+                        style={{
+                          backgroundColor: displayedPillar.accent,
+                        }}
                       />
 
                       <span>{fact}</span>
