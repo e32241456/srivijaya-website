@@ -1,0 +1,6 @@
+{
+  "name": "Rulers of Srivijaya",
+  "description": "An editorial digital museum and historical storytelling archive chronicling the 7th-century maritime thalassocracy of Srivijaya and its sovereign rulers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

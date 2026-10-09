@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: 'Noto Serif', Georgia, serif;
+  --font-sans: 'Hanken Grotesk', system-ui, sans-serif;
+  
+  --color-surface: #0c1420;
+  --color-surface-dim: #0c1420;
+  --color-surface-bright: #323947;
+  --color-surface-lowest: #070e1a;
+  --color-surface-low: #141c28;
+  --color-surface-card: #18202c;
+  --color-surface-high: #232a37;
+  --color-surface-highest: #2d3542;
+  
+  --color-gold: #e9c176;
+  --color-gold-burnished: #c5a059;
+  --color-gold-light: #ffdea5;
+  --color-gold-dark: #775a19;
+  
+  --color-secondary-teal: #b5cad3;
+  --color-abyss: #0f232a;
+  --color-volcanic: #1a1412;
+  --color-bronze: #9e7d3b;
+  --color-bronze-dim: rgba(158, 125, 59, 0.25);
+  
+  --color-parchment: #ede4d3;
+  --color-parchment-light: #f4ede0;
+}
+
+/* Custom Archival Utilities */
+.font-archival {
+  font-family: var(--font-sans);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.font-code-label {
+  font-family: var(--font-sans);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* Antique Specimen Hairline */
+.border-specimen {
+  border-color: rgba(197, 160, 89, 0.22);
+}
+
+.border-specimen-strong {
+  border-color: rgba(197, 160, 89, 0.45);
+}
+
+/* Oceanic Backdrop Glaze */
+.glass-oceanic {
+  background-color: rgba(12, 20, 32, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Subtle gold glow for active archival items */
+.glow-gold {
+  box-shadow: 0 0 24px rgba(233, 193, 118, 0.15);
+}
+
+/* Custom Scrollbar for museum aesthetics */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070e1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #232a37;
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9e7d3b;
+}
+
+/* Zero radius sharp enforce */
+* {
+  border-radius: 0px !important;
+}
