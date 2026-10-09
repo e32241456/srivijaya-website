@@ -94,9 +94,7 @@ export default function PillarsOfPowerSection() {
   const [selectedPillarId, setSelectedPillarId] = useState('naval');
   const [displayedPillarId, setDisplayedPillarId] = useState('naval');
   const [isFading, setIsFading] = useState(false);
-
-  const selectedPillar =
-    pillars.find((pillar) => pillar.id === selectedPillarId) ?? pillars[0];
+  const [animationKey, setAnimationKey] = useState(0);
 
   const displayedPillar =
     pillars.find((pillar) => pillar.id === displayedPillarId) ?? pillars[0];
@@ -109,13 +107,19 @@ export default function PillarsOfPowerSection() {
     setSelectedPillarId(id);
     setIsFading(true);
 
+    // Tunggu sampai panel selesai fade-out.
     window.setTimeout(() => {
       setDisplayedPillarId(id);
+      setAnimationKey((previous) => previous + 1);
 
-      window.setTimeout(() => {
-        setIsFading(false);
-      }, 50);
-    }, 250);
+      // Beri browser kesempatan menerapkan opacity 0
+      // sebelum panel mulai fade-in kembali.
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          setIsFading(false);
+        });
+      });
+    }, 300);
   };
 
   return (
@@ -210,7 +214,7 @@ export default function PillarsOfPowerSection() {
             </div>
           </div>
 
-          {/* Right: Four flat flip-navigation buttons */}
+          {/* Right: Four pillar buttons */}
           <div className="flex flex-col">
             <div className="mb-5 flex items-center justify-between gap-4">
               <h3 className="font-serif text-xl text-[#ede4d3]">
@@ -257,12 +261,13 @@ export default function PillarsOfPowerSection() {
               })}
             </div>
 
-            {/* Selected pillar details with fade transition */}
+            {/* Pillar detail panel */}
             <div
               className={`mt-6 border border-[#c7a16a]/30 bg-[#0d1520] p-5 transition-opacity duration-300 ease-in-out sm:p-7 ${
                 isFading ? 'opacity-0' : 'opacity-100'
               }`}
             >
+              {/* Icon, pillar number, and slide-in title */}
               <div className="mb-5 flex items-start gap-4">
                 <div
                   className="flex h-12 w-12 shrink-0 items-center justify-center border"
@@ -278,7 +283,10 @@ export default function PillarsOfPowerSection() {
                   />
                 </div>
 
-                <div className="min-w-0">
+                <div
+                  key={animationKey}
+                  className="min-w-0 animate-slide-in-right"
+                >
                   <span
                     className="text-[10px] font-semibold uppercase tracking-[0.2em]"
                     style={{ color: displayedPillar.accent }}
